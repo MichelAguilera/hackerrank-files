@@ -17,40 +17,54 @@ import sys
 
 class Hourglass:
 
-    def setDimensions(origin, **kwargs):
-        if kwargs['i'] != None:
-            i = kwargs['i']
-        else:
-            i = 0
+    def __init__(self, matrix, origin):
+        self.matrix = matrix
+        self.origin = origin
 
+    def setDimensions(self):
         return [
-            (origin[0 + i], origin[1 + i]),     (origin[0 + i] + 1, origin[1 + i]),     (origin[0 + i] + 2, origin[1 + i])      , 
-                                                (origin[0 + i] + 1, origin[1 + i]) + 1                                          , 
-            (origin[0 + i], origin[1 + i]) + 2, (origin[0 + i] + 1, origin[1 + i]) + 2, (origin[0 + i] + 2, origin[1 + i]) + 2
+            (0 + self.origin[0], 0 + self.origin[1]), (0 + self.origin[0], 1 + self.origin[1]), (0 + self.origin[0], 2 + self.origin[1]), 
+                                                      (1 + self.origin[0], 1 + self.origin[1]),
+            (2 + self.origin[0], 0 + self.origin[1]), (2 + self.origin[0], 1 + self.origin[1]), (2 + self.origin[0], 2 + self.origin[1])
         ]
 
-    def __init__(self, origin):
-        self.dimensions = self.setDimensions(origin)
-
-    def totalSum(self, matrix):
-        zum = 0
-        for i in self.dimensions:
-
-
+    def totalSum(self):
+        z = 0
+        for tuple in self.setDimensions():
+            z += self.matrix[tuple[0]][tuple[1]]
+        print(self.matrix, z)
+        return z
 
 def hourglassSum(arr):
-    # Write your code here
+    res = []
+    h = Hourglass(arr, (0, 0))
+    for y in range(4):
+        for x in range(4):
+            res.append(h.totalSum())
+            h.origin = (y, x)
+
+    print(res)
+    return max(res)
 
 if __name__ == '__main__':
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    # fptr = open(os.environ['OUTPUT_PATH'], 'w')
 
-    arr = []
+    # arr = []
 
-    for _ in range(6):
-        arr.append(list(map(int, input().rstrip().split())))
+    # for _ in range(6):
+    #     arr.append(list(map(int, input().rstrip().split())))
 
-    result = hourglassSum(arr)
+    # result = hourglassSum(arr)
+    matr = [
+        [3, 7, -3, 0, 1, 8],
+        [1, -4, -7, -8, -6, 5],
+        [-8, 1, 3, 3, 5, 7],
+        [-2, 4, 3, 1, 2, 7],
+        [2, 4, -5, 1, 8, 4],
+        [5, -7, 6, 5, 2, 8]
+    ]
+    test = hourglassSum(matr)
 
-    fptr.write(str(result) + '\n')
+    # fptr.write(str(result) + '\n')
 
-    fptr.close()
+    # fptr.close()
